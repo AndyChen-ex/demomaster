@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#2c1f0e" />
+  <title>有德豆腐 — 職人生鮮豆類</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&display=swap');
+
+    /* ════════════════════════════════════════
+       TOKEN & RESET
+       ════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:    #f7f2e8;
+      --sand:     #e8dcc8;
+      --gold:     #c8973a;
+      --gold-lt:  #f0c060;
+      --ink:      #2c1f0e;
+      --brown:    #6b4c1e;
+      --brown-lt: #a07840;
+      --white:    #ffffff;
+      --green:    #4caf50;
+      --red:      #e53935;
+
+      /* 版面最大寬 */
+      --max-w: 900px;
+      /* 水平安全間距 */
+      --pad-x: clamp(16px, 5vw, 40px);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Serif TC', 'Georgia', serif;
+      background: var(--cream);
+      color: var(--ink);
+      -webkit-text-size-adjust: 100%;
+    }
+
+    /* ════════════════════════════════════════
+       TOP NAV（桌機顯示錨點，手機隱藏）
+       ════════════════════════════════════════ */
+    .top-nav {
+      display: none; /* 手機不顯示 */
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 300;
+      background: rgba(44, 31, 14, 0.92);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(200,151,58,0.2);
+    }
+
+    .top-nav-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--pad-x);
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--white);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-brand em { font-style: normal; color: var(--gold); }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover { color: var(--gold-lt); }
+
+    /* 桌機才顯示 nav */
+    @media (min-width: 768px) {
+      .top-nav { display: block; }
+      /* Hero 要讓出 nav 高度 */
+      .hero { padding-top: 56px; }
+    }
+
+    /* ════════════════════════════════════════
+       HERO — mobile first
+       ════════════════════════════════════════ */
+    .hero {
+      position: relative;
+      min-height: 100dvh; /* dynamic viewport height（iOS browser bar 不計入） */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      background: var(--ink);
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      z-index: 0;
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: min(480px, 90vw);
+      height: min(480px, 90vw);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,151,58,0.18) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+      animation: breathe 5s ease-in-out infinite;
+    }
+
+    @keyframes breathe {
+      0%,100% { transform: translate(-50%,-50%) scale(1);   opacity: 1; }
+      50%      { transform: translate(-50%,-50%) scale(1.1); opacity: 0.7; }
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 60px var(--pad-x) 80px;
+      width: 100%;
+      max-width: 640px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(200,151,58,0.5);
+      border-radius: 99px;
+      padding: 5px 16px;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--gold-lt);
+      margin-bottom: 24px;
+    }
+
+    .hero-badge::before, .hero-badge::after {
+      content: '◆';
+      font-size: 7px;
+      opacity: 0.6;
+    }
+
+    .hero-brand {
+      font-size: clamp(52px, 16vw, 96px);
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1;
+      letter-spacing: -0.01em;
+      display: inline-block;
+    }
+
+    .hero-brand em {
+      font-style: normal;
+      color: var(--gold);
+      position: relative;
+    }
+
+    .hero-brand em::after {
+      content: '';
+      position: absolute;
+      bottom: 4px; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-lt), transparent);
+      border-radius: 2px;
+    }
+
+    .hero-sub {
+      margin-top: 12px;
+      font-size: clamp(11px, 2.5vw, 15px);
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.2em;
+    }
+
+    .hero-divider {
+      margin: 28px auto;
+      width: 48px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .hero-tagline {
+      font-size: clamp(15px, 4vw, 20px);
+      color: rgba(255,255,255,0.88);
+      line-height: 1.75;
+    }
+
+    .hero-tagline strong { color: var(--gold-lt); font-weight: 700; }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 24px; left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      color: rgba(255,255,255,0.3);
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      animation: scrollBounce 2s ease-in-out infinite;
+      /* 觸控目標 */
+      padding: 8px 16px;
+    }
+
+    .hero-scroll svg {
+      width: 18px; height: 18px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.5;
+    }
+
+    @keyframes scrollBounce {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ════════════════════════════════════════
+       STORY SECTION — mobile first
+       ════════════════════════════════════════ */
+    .story {
+      background: var(--white);
+      position: relative;
+    }
+
+    .story-wave {
+      display: block;
+      width: 100%;
+      height: 48px;
+      background: var(--ink);
+      clip-path: ellipse(55% 100% at 50% 0%);
+    }
+
+    .story-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 48px var(--pad-x) 64px;
+    }
+
+    @media (min-width: 768px) {
+      .story-inner { padding: 72px var(--pad-x) 96px; }
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      color: var(--gold);
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 20px; height: 1px;
+      background: var(--gold);
+    }
+
+    .story-heading {
+      font-size: clamp(22px, 5vw, 38px);
+      font-weight: 900;
+      color: var(--ink);
+      line-height: 1.35;
+      margin-bottom: 32px;
+    }
+
+    .story-heading em { font-style: normal; color: var(--gold); }
+
+    /* 三卡：手機單欄 → 平板三欄 */
+    .story-cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-bottom: 48px;
+    }
+
+    @media (min-width: 560px) {
+      .story-cards { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .story-card {
+      border: 1px solid var(--sand);
+      border-radius: 14px;
+      padding: 22px 20px;
+      background: var(--cream);
+      position: relative;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    @media (hover: hover) {
+      .story-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 28px rgba(100,60,0,0.10);
+      }
+    }
+
+    .story-card::after {
+      content: '';
+      position: absolute;
+      top: 12px; right: 12px;
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--gold-lt);
+      opacity: 0.5;
+    }
+
+    .card-icon  { font-size: 28px; margin-bottom: 12px; display: block; }
+    .card-title { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+    .card-body  { font-size: 13px; color: var(--brown-lt); line-height: 1.75; }
+
+    .story-quote {
+      position: relative;
+      padding: 36px 28px;
+      background: var(--ink);
+      border-radius: 18px;
+      color: var(--white);
+      text-align: center;
+      overflow: hidden;
+    }
+
+    @media (min-width: 600px) {
+      .story-quote { padding: 48px 44px; }
+    }
+
+    .story-quote::before {
+      content: '"';
+      position: absolute;
+      top: -24px; left: 16px;
+      font-size: 120px;
+      color: rgba(200,151,58,0.1);
+      font-family: Georgia, serif;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    @media (min-width: 600px) {
+      .story-quote::before { font-size: 160px; }
+    }
+
+    .quote-text {
+      font-size: clamp(15px, 3vw, 21px);
+      line-height: 1.9;
+      color: rgba(255,255,255,0.92);
+      position: relative;
+      z-index: 1;
+    }
+
+    .quote-text strong { color: var(--gold-lt); font-weight: 700; }
+
+    .quote-author {
+      margin-top: 20px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.15em;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* 徽章群：手機自動換行 */
+    .badges-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 40px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    .badge-green { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+    .badge-gold  { background: #fdf3e0; color: #b8860b; border: 1px solid #f0c060; }
+    .badge-blue  { background: #e3f2fd; color: #1565c0; border: 1px solid #90caf9; }
+
+    /* ════════════════════════════════════════
+       黏性免運進度條 — mobile first
+       ════════════════════════════════════════ */
+    .sticky-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--ink);
+      padding: 10px var(--pad-x);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    }
+
+    /* 桌機 nav 在上，sticky bar 跟在下方 */
+    @media (min-width: 768px) {
+      .sticky-bar { top: 56px; }
+    }
+
+    .sticky-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* 手機隱藏文字，只保留 emoji */
+    .sticky-label {
+      font-size: 11px;
+      color: rgba(255,255,255,0.55);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .sticky-label .label-text {
+      display: none; /* 手機不顯示文字 */
+    }
+
+    @media (min-width: 480px) {
+      .sticky-label .label-text { display: inline; }
+    }
+
+    .sticky-label strong { color: var(--gold-lt); }
+
+    .bar-track {
+      flex: 1;
+      background: rgba(255,255,255,0.12);
+      border-radius: 99px;
+      height: 12px;
+      position: relative;
+      overflow: visible;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, #c8973a, #f0c060);
+      transition: width 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+      position: relative;
+    }
+
+    .bar-fill::after {
+      content: '';
+      position: absolute;
+      top: 2px; left: 5px; right: 5px;
+      height: 3px;
+      background: rgba(255,255,255,0.35);
+      border-radius: 99px;
+    }
+
+    .bar-truck {
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 16px;
+      transition: left 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+      z-index: 2;
+      filter: drop-shadow(0 1px 3px rgba(0,0,0,0.4));
+    }
+
+    .bar-flag {
+      position: absolute;
+      right: -3px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+    }
+
+    .bar-track.reached .bar-fill { background: linear-gradient(90deg, #4caf50, #81c784); }
+
+    .sticky-amount {
+      font-size: 13px;
+      color: var(--white);
+      white-space: nowrap;
+      flex-shrink: 0;
+      font-weight: 700;
+      min-width: 48px;
+      text-align: right;
+    }
+
+    /* ════════════════════════════════════════
+       PRODUCTS SECTION — mobile first
+       ════════════════════════════════════════ */
+    .products-section { background: var(--cream); }
+
+    .products-wave {
+      display: block;
+      width: 100%;
+      height: 48px;
+      background: var(--white);
+      clip-path: ellipse(55% 100% at 50% 0%);
+    }
+
+    .products-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 32px var(--pad-x) 120px;
+    }
+
+    /* 底部購物車有多高就留多少 padding-bottom */
+    .products-inner.cart-open { padding-bottom: 160px; }
+
+    .section-heading {
+      font-size: clamp(20px, 5vw, 30px);
+      font-weight: 900;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+
+    .section-sub {
+      font-size: 13px;
+      color: var(--brown-lt);
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    /* 商品格線：手機 1欄 → 480px 2欄 → 680px 3欄 → 900px 3欄（更寬鬆） */
+    .product-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    @media (min-width: 380px) {
+      .product-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (min-width: 680px) {
+      .product-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    }
+
+    /* ── 商品卡 ── */
+    .product-card {
+      background: var(--white);
+      border: 1.5px solid var(--sand);
+      border-radius: 16px;
+      padding: 18px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media (hover: hover) {
+      .product-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 28px rgba(100,60,0,0.10);
+        border-color: var(--gold);
+      }
+    }
+
+    .product-card.in-cart { border-color: var(--gold); background: #fffdf5; }
+
+    .in-cart-badge {
+      position: absolute;
+      top: 10px; right: 10px;
+      background: var(--gold);
+      color: var(--white);
+      font-size: 9px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 99px;
+      letter-spacing: 0.04em;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity 0.2s, transform 0.2s;
+      pointer-events: none;
+    }
+
+    .product-card.in-cart .in-cart-badge { opacity: 1; transform: scale(1); }
+
+    .card-emoji { font-size: 40px; line-height: 1; text-align: center; }
+    .card-name  { font-size: 15px; font-weight: 700; color: var(--ink); }
+
+    .unit-tabs { display: flex; gap: 5px; }
+
+    .unit-tab {
+      flex: 1;
+      /* 觸控目標至少 44px */
+      min-height: 36px;
+      padding: 0 4px;
+      border: 1.5px solid var(--sand);
+      border-radius: 8px;
+      background: var(--cream);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--brown-lt);
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .unit-tab.active { border-color: var(--gold); background: #fdf3e0; color: var(--brown); }
+
+    .card-price { font-size: 22px; font-weight: 900; color: var(--gold); }
+    .card-price span { font-size: 12px; font-weight: 400; color: var(--brown-lt); margin-left: 3px; }
+
+    .card-actions { display: flex; align-items: center; gap: 8px; }
+
+    .qty-ctrl {
+      display: flex;
+      align-items: center;
+      border: 1.5px solid var(--sand);
+      border-radius: 10px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    /* 觸控目標 44px */
+    .qty-btn {
+      width: 36px; height: 40px;
+      border: none;
+      background: var(--cream);
+      font-size: 18px;
+      cursor: pointer;
+      color: var(--brown);
+      font-family: inherit;
+      transition: background 0.12s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .qty-btn:active { background: var(--sand); }
+
+    .qty-num {
+      width: 32px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+      border: none;
+      background: var(--white);
+      font-family: inherit;
+      pointer-events: none;
+    }
+
+    .add-btn {
+      flex: 1;
+      min-height: 40px;
+      border: none;
+      border-radius: 10px;
+      background: var(--ink);
+      color: var(--white);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      letter-spacing: 0.04em;
+      transition: background 0.15s, transform 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .add-btn:active { transform: scale(0.97); }
+    .add-btn.added  { background: var(--green); }
+
+    /* ════════════════════════════════════════
+       底部購物車 — mobile first
+       ════════════════════════════════════════ */
+    .cart-summary {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 200;
+      background: var(--ink);
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+      box-shadow: 0 -4px 24px rgba(0,0,0,0.35);
+      /* iOS home indicator 安全區 */
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    .cart-summary.visible { transform: translateY(0); }
+
+    .cart-summary-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 12px var(--pad-x);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .cart-icon-wrap { position: relative; flex-shrink: 0; }
+    .cart-emoji { font-size: 24px; }
+
+    .cart-count-badge {
+      position: absolute;
+      top: -5px; right: -7px;
+      background: var(--red);
+      color: white;
+      font-size: 9px;
+      font-weight: 700;
+      width: 17px; height: 17px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cart-text { flex: 1; min-width: 0; }
+
+    /* 手機隱藏品項預覽，平板以上顯示 */
+    .cart-items-preview {
+      display: none;
+      font-size: 11px;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    @media (min-width: 520px) {
+      .cart-items-preview { display: block; }
+    }
+
+    .cart-total-row { display: flex; align-items: baseline; gap: 5px; flex-wrap: wrap; }
+    .cart-total-label { font-size: 11px; color: rgba(255,255,255,0.45); }
+    .cart-total-num   { font-size: 20px; font-weight: 900; color: var(--gold-lt); }
+    .cart-remain-hint { font-size: 11px; color: rgba(255,255,255,0.4); }
+    .cart-remain-hint.free { color: #81c784; }
+
+    .checkout-btn {
+      flex-shrink: 0;
+      padding: 0 18px;
+      height: 44px;  /* 觸控目標 44px */
+      background: var(--gold);
+      color: var(--white);
+      border: none;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      transition: background 0.15s, transform 0.1s;
+      white-space: nowrap;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .checkout-btn:active { transform: scale(0.97); }
+
+    @media (hover: hover) {
+      .checkout-btn:hover { background: var(--gold-lt); color: var(--ink); }
+      .add-btn:hover { background: var(--brown); }
+    }
+
+    /* 飛點動畫 */
+    @keyframes flyDot {
+      0%   { opacity: 1; transform: translate(0,0) scale(1); }
+      80%  { opacity: 1; }
+      100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.3); }
+    }
+
+    .fly-dot {
+      position: fixed;
+      width: 10px; height: 10px;
+      background: var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 999;
+      animation: flyDot 0.5s ease-in forwards;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════
+       TOP NAV（桌機）
+       ══════════════════════════════════ -->
+  <nav class="top-nav" aria-label="主導覽">
+    <div class="top-nav-inner">
+      <a class="nav-brand" href="#top"><em>有德</em>豆腐</a>
+      <ul class="nav-links">
+        <li><a href="#story">我們的理念</a></li>
+        <li><a href="#products">選購商品</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════
+       1. HERO
+       ══════════════════════════════════ -->
+  <header class="hero" id="top">
+    <div class="hero-bg"></div>
+    <div class="hero-glow"></div>
+
+    <div class="hero-inner">
+      <div class="hero-badge">職人生鮮豆類</div>
+
+      <h1 class="hero-brand">
+        <em>有德</em>豆腐
+      </h1>
+      <p class="hero-sub">YOU DE TOFU · ARTISAN TOFU</p>
+
+      <div class="hero-divider"></div>
+
+      <p class="hero-tagline">
+        吃素，<strong>不應只有一種選擇。</strong><br>
+        從一塊豆腐開始，還原餐桌的多樣可能。
+      </p>
+    </div>
+
+    <a class="hero-scroll" href="#story" aria-label="向下捲動">
+      了解更多
+      <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+    </a>
+  </header>
+
+  <!-- ══════════════════════════════════
+       2. STORY
+       ══════════════════════════════════ -->
+  <section class="story" id="story">
+    <span class="story-wave" aria-hidden="true"></span>
+
+    <div class="story-inner">
+      <div class="section-label">我們的理念</div>
+
+      <h2 class="story-heading">
+        每一塊豆腐背後，<br>
+        都有一個<em>清楚的答案</em>。
+      </h2>
+
+      <div class="story-cards">
+        <div class="story-card">
+          <span class="card-icon" aria-hidden="true">🌱</span>
+          <div class="card-title">多樣化選擇</div>
+          <div class="card-body">致力研發多樣化的生鮮豆類產品，讓蔬食餐桌不再單調，為您的每一餐帶來更豐富的變化。</div>
+        </div>
+        <div class="story-card">
+          <span class="card-icon" aria-hidden="true">🔍</span>
+          <div class="card-title">嚴格區分產品線</div>
+          <div class="card-body">基改與非基改產品線嚴格分隔，清楚標示，讓您在選購時一目了然，不必猜測。</div>
+        </div>
+        <div class="story-card">
+          <span class="card-icon" aria-hidden="true">📋</span>
+          <div class="card-title">資訊透明 · 來源清楚</div>
+          <div class="card-body">從產地到餐桌，每批原料皆可溯源，資訊公開無保留，是健康飲食的可信賴夥伴。</div>
+        </div>
+      </div>
+
+      <div class="story-quote">
+        <p class="quote-text">
+          不論是為了<strong>健康</strong>或<strong>信仰</strong>而選擇蔬食，<br>
+          您都值得在餐桌上擁有更豐富的變化。<br>
+          我們相信，透明的資訊本身，就是一種尊重。
+        </p>
+        <p class="quote-author">— 有德豆腐 創立初心</p>
+      </div>
+
+      <div class="badges-row">
+        <span class="badge badge-green">✓ 非基改大豆選項</span>
+        <span class="badge badge-gold">✓ 基改 / 非基改明確標示</span>
+        <span class="badge badge-blue">✓ 產地可溯源</span>
+        <span class="badge badge-green">✓ 無添加防腐劑</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       3. 黏性免運進度條
+       ══════════════════════════════════ -->
+  <div class="sticky-bar" id="stickyBar" role="status" aria-live="polite">
+    <div class="sticky-inner">
+      <div class="sticky-label">
+        🧈<span class="label-text"> 免運進度 <strong>$1,200</strong></span>
+      </div>
+      <div class="bar-track" id="barTrack" aria-hidden="true">
+        <div class="bar-fill" id="barFill" style="width:0%"></div>
+        <span class="bar-truck" id="barTruck" style="left:3%">🚚</span>
+        <span class="bar-flag">🏁</span>
+      </div>
+      <div class="sticky-amount" id="stickyAmt">$0</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       4. 商品湊單區
+       ══════════════════════════════════ -->
+  <section class="products-section" id="products">
+    <span class="products-wave" aria-hidden="true"></span>
+
+    <div class="products-inner" id="productsInner">
+      <div class="section-label">精選商品</div>
+      <h2 class="section-heading">今日現貨，湊單免運</h2>
+      <p class="section-sub">選好份量、加入購物車，湊滿 $1,200 自動免運。</p>
+
+      <div class="product-grid" id="productGrid" role="list">
+        <!-- 由 JS 渲染 -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       固定底部購物車
+       ══════════════════════════════════ -->
+  <div class="cart-summary" id="cartSummary" role="status" aria-live="polite">
+    <div class="cart-summary-inner">
+      <div class="cart-icon-wrap" aria-hidden="true">
+        <span class="cart-emoji">🛒</span>
+        <span class="cart-count-badge" id="cartCount">0</span>
+      </div>
+      <div class="cart-text">
+        <div class="cart-items-preview" id="cartPreview"></div>
+        <div class="cart-total-row">
+          <span class="cart-total-label">合計</span>
+          <span class="cart-total-num" id="cartTotal">$0</span>
+          <span class="cart-remain-hint" id="cartHint"></span>
+        </div>
+      </div>
+      <button class="checkout-btn">結帳 →</button>
+    </div>
+  </div>
+
+  <script>
+  const PRODUCTS = [
+    { id: 'tofu',       emoji: '🟨', name: '手工豆腐', units: [{ label: '1 塊', price: 15 }] },
+    { id: 'soymilk',   emoji: '🥛', name: '新鮮豆漿', units: [{ label: '1 包', price: 20 }] },
+    { id: 'white_dry',  emoji: '🫙', name: '白豆干',   units: [{ label: '半 斤', price: 15 }, { label: '1 斤', price: 30 }] },
+    { id: 'spice_dry',  emoji: '🍂', name: '五香乾',   units: [{ label: '半 斤', price: 15 }, { label: '1 斤', price: 30 }] },
+    { id: 'tofu_skin',  emoji: '🧆', name: '豆包',     units: [{ label: '半 斤', price: 25 }, { label: '1 斤', price: 50 }] },
+    { id: 'tofu_milk',  emoji: '🍶', name: '豆包漿',   units: [{ label: '1 包', price: 200 }] },
+  ];
+
+  const THRESHOLD = 1200;
+  const cart = {};
+
+  function renderProducts() {
+    const grid = document.getElementById('productGrid');
+    grid.innerHTML = '';
+    PRODUCTS.forEach(p => {
+      if (!cart[p.id]) cart[p.id] = { unitIdx: p.units.length - 1, qty: 0 };
+      const state  = cart[p.id];
+      const unit   = p.units[state.unitIdx];
+      const inCart = state.qty > 0;
+
+      const card = document.createElement('div');
+      card.className = 'product-card' + (inCart ? ' in-cart' : '');
+      card.id = 'card-' + p.id;
+      card.setAttribute('role', 'listitem');
+
+      const unitTabsHTML = p.units.length > 1
+        ? `<div class="unit-tabs" data-pid="${p.id}" role="group" aria-label="選擇份量">
+            ${p.units.map((u, i) =>
+              `<button class="unit-tab${i === state.unitIdx ? ' active' : ''}" data-unit="${i}" aria-pressed="${i === state.unitIdx}">${u.label}</button>`
+            ).join('')}
+           </div>`
+        : '';
+
+      card.innerHTML = `
+        <span class="in-cart-badge" aria-hidden="true">已選購</span>
+        <div class="card-emoji" aria-hidden="true">${p.emoji}</div>
+        <div class="card-name">${p.name}</div>
+        ${unitTabsHTML}
+        <div class="card-price" id="price-${p.id}" aria-label="售價">$${unit.price}<span>/ ${unit.label}</span></div>
+        <div class="card-actions">
+          <div class="qty-ctrl" role="group" aria-label="數量">
+            <button class="qty-btn" data-pid="${p.id}" data-action="dec" aria-label="減少數量">−</button>
+            <div class="qty-num" id="qty-${p.id}" aria-live="polite">${state.qty}</div>
+            <button class="qty-btn" data-pid="${p.id}" data-action="inc" aria-label="增加數量">+</button>
+          </div>
+          <button class="add-btn${inCart ? ' added' : ''}" id="addbtn-${p.id}" data-pid="${p.id}">
+            ${inCart ? '✓ 已加入' : '＋ 加入'}
+          </button>
+        </div>`;
+      grid.appendChild(card);
+    });
+    bindEvents();
+  }
+
+  function bindEvents() {
+    document.querySelectorAll('.unit-tabs').forEach(wrap => {
+      wrap.addEventListener('click', e => {
+        const btn = e.target.closest('.unit-tab');
+        if (!btn) return;
+        const pid = wrap.dataset.pid;
+        cart[pid].unitIdx = parseInt(btn.dataset.unit);
+        cart[pid].qty = 0;
+        renderProducts();
+        updateAll();
+      });
+    });
+
+    document.querySelectorAll('.qty-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const pid = btn.dataset.pid;
+        if (btn.dataset.action === 'inc') {
+          cart[pid].qty++;
+        } else {
+          cart[pid].qty = Math.max(0, cart[pid].qty - 1);
+        }
+        updateCard(pid);
+        updateAll();
+      });
+    });
+
+    document.querySelectorAll('.add-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const pid = btn.dataset.pid;
+        cart[pid].qty++;
+        flyDotAnimation(btn);
+        updateCard(pid);
+        updateAll();
+      });
+    });
+  }
+
+  function updateCard(pid) {
+    const state  = cart[pid];
+    const p      = PRODUCTS.find(x => x.id === pid);
+    const unit   = p.units[state.unitIdx];
+    const inCart = state.qty > 0;
+    const card   = document.getElementById('card-' + pid);
+    if (!card) return;
+    document.getElementById('qty-'   + pid).textContent = state.qty;
+    document.getElementById('price-' + pid).innerHTML   = `$${unit.price}<span>/ ${unit.label}</span>`;
+    const addBtn = document.getElementById('addbtn-' + pid);
+    addBtn.textContent = inCart ? '✓ 已加入' : '＋ 加入';
+    addBtn.classList.toggle('added', inCart);
+    card.classList.toggle('in-cart', inCart);
+  }
+
+  function updateAll() {
+    const total  = calcTotal();
+    const pct    = Math.min(total / THRESHOLD, 1) * 100;
+    const items  = countItems();
+    const remain = THRESHOLD - total;
+
+    document.getElementById('barFill').style.width   = pct + '%';
+    document.getElementById('barTruck').style.left   = Math.min(Math.max(pct, 3), 95) + '%';
+    document.getElementById('stickyAmt').textContent = '$' + total.toLocaleString();
+    document.getElementById('barTrack').classList.toggle('reached', total >= THRESHOLD);
+
+    const cartSummary = document.getElementById('cartSummary');
+    const visible = items > 0;
+    cartSummary.classList.toggle('visible', visible);
+    // 商品區下方留空，避免被 cart bar 遮住
+    document.getElementById('productsInner').classList.toggle('cart-open', visible);
+
+    document.getElementById('cartCount').textContent = items;
+    document.getElementById('cartTotal').textContent = '$' + total.toLocaleString();
+
+    const hint = document.getElementById('cartHint');
+    if (total >= THRESHOLD) {
+      hint.textContent = '🎉 已享免運！';
+      hint.className   = 'cart-remain-hint free';
+    } else {
+      hint.textContent = `再 $${remain.toLocaleString()} 免運`;
+      hint.className   = 'cart-remain-hint';
+    }
+
+    document.getElementById('cartPreview').textContent = PRODUCTS
+      .filter(p => cart[p.id]?.qty > 0)
+      .map(p => `${p.name} × ${cart[p.id].qty}`)
+      .join('、');
+  }
+
+  function calcTotal() {
+    return PRODUCTS.reduce((sum, p) => {
+      const s = cart[p.id];
+      return s?.qty ? sum + p.units[s.unitIdx].price * s.qty : sum;
+    }, 0);
+  }
+
+  function countItems() {
+    return PRODUCTS.reduce((sum, p) => sum + (cart[p.id]?.qty || 0), 0);
+  }
+
+  function flyDotAnimation(btn) {
+    const dot   = document.createElement('div');
+    dot.className = 'fly-dot';
+    dot.setAttribute('aria-hidden', 'true');
+    const r     = btn.getBoundingClientRect();
+    const track = document.getElementById('barTrack').getBoundingClientRect();
+    const dx    = (track.left + track.width  / 2) - (r.left + r.width  / 2);
+    const dy    = (track.top  + track.height / 2) - (r.top  + r.height / 2);
+    dot.style.cssText = `left:${r.left+r.width/2}px;top:${r.top+r.height/2}px;--dx:${dx}px;--dy:${dy}px;`;
+    document.body.appendChild(dot);
+    dot.addEventListener('animationend', () => dot.remove());
+  }
+
+  renderProducts();
+  updateAll();
+  </script>
+</body>
+</html>
