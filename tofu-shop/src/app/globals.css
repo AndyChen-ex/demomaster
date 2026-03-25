@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700;900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ink:      #2c1f0e;
+  --cream:    #f7f2e8;
+  --sand:     #e8dcc8;
+  --gold:     #c8973a;
+  --gold-lt:  #f0c060;
+  --brown:    #6b4c1e;
+  --brown-lt: #a07840;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--cream); color: var(--ink); font-family: 'Noto Serif TC', Georgia, serif; }

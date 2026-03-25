@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Product {
+  id          String           @id @default(uuid())
+  title       String
+  description String?
+  imageUrl    String?
+  variants    ProductVariant[]
+}
+
+model ProductVariant {
+  id         String      @id @default(uuid())
+  productId  String
+  unitName   String
+  price      Decimal
+  stock      Int         @default(0)
+  product    Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  orderItems OrderItem[]
+}
+
+model Order {
+  id          String      @id @default(uuid())
+  createdAt   DateTime    @default(now())
+  shipping    String      // "store" | "delivery"
+  payment     String      // "transfer" | "card"
+  couponCode  String?
+  discount    Decimal     @default(0)
+  subtotal    Decimal
+  total       Decimal
+  name        String?
+  phone       String?
+  address     String?
+  status      String      @default("preparing")  // preparing | shipped | delivered
+  memberId    String?
+  member      Member?     @relation(fields: [memberId], references: [id])
+  items       OrderItem[]
+}
+
+model OrderItem {
+  id              String         @id @default(uuid())
+  orderId         String
+  variantId       String
+  quantity        Int
+  priceAtPurchase Decimal
+  order           Order          @relation(fields: [orderId], references: [id])
+  variant         ProductVariant @relation(fields: [variantId], references: [id])
+}
+
+model Coupon {
+  id        String   @id @default(uuid())
+  code      String   @unique
+  discount  Int
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model Member {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String?
+  createdAt DateTime @default(now())
+  orders    Order[]
+}
