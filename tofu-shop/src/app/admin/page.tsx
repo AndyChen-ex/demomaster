@@ -9,7 +9,7 @@ export default async function AdminPage({
 }: {
   searchParams: { tab?: string }
 }) {
-  const validTabs = ['products', 'coupons', 'orders']
+  const validTabs = ['products', 'coupons', 'orders', 'banners']
   const tab = validTabs.includes(searchParams.tab ?? '') ? searchParams.tab! : 'products'
 
   const rawProducts = await db.product.findMany({
@@ -42,6 +42,9 @@ export default async function AdminPage({
     createdAt: o.createdAt.toISOString(),
     items: o.items.map(i => ({ ...i, priceAtPurchase: Number(i.priceAtPurchase) })),
   }))
+
+  const rawBanners = await db.banner.findMany({ orderBy: { sortOrder: 'asc' } })
+  const banners = rawBanners.map(b => ({ ...b, createdAt: b.createdAt.toISOString() }))
 
   const totalProducts  = products.length
   const totalVariants  = products.reduce((s, p) => s + p.variants.length, 0)
@@ -84,7 +87,7 @@ export default async function AdminPage({
           ))}
         </div>
 
-        <AdminTabs tab={tab} products={products} coupons={coupons} orders={orders} />
+        <AdminTabs tab={tab} products={products} coupons={coupons} orders={orders} banners={banners} />
       </main>
     </div>
   )

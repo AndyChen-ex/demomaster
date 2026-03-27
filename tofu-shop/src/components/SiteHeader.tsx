@@ -40,6 +40,18 @@ export default function SiteHeader() {
         </div>
       </Link>
 
+      {/* Nav */}
+      <nav className="hidden sm:flex items-center gap-1">
+        <Link href="/about"
+          className="px-3 py-1.5 rounded-full text-sm font-semibold text-white/60 hover:text-[#f0c060] hover:bg-white/5 transition-all">
+          關於我們
+        </Link>
+        <Link href="/#shop"
+          className="px-3 py-1.5 rounded-full text-sm font-semibold text-white/60 hover:text-[#f0c060] hover:bg-white/5 transition-all">
+          購物中心
+        </Link>
+      </nav>
+
       {/* Right: member area */}
       <div className="relative">
         {loading ? (

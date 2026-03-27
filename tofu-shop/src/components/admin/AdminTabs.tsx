@@ -4,10 +4,15 @@ import { Suspense } from 'react'
 import ProductList from './ProductList'
 import CouponManager from './CouponManager'
 import OrderManager from './OrderManager'
+import BannerManager from './BannerManager'
 import { ProductData } from '@/lib/types'
 
 interface Coupon {
   id: string; code: string; discount: number; expiresAt: string; createdAt: string
+}
+
+interface Banner {
+  id: string; text: string; active: boolean; sortOrder: number
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -17,21 +22,23 @@ interface Props {
   coupons: Coupon[]
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   orders: any[]
+  banners: Banner[]
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function TabsInner({ tab, products, coupons, orders }: Props) {
+function TabsInner({ tab, products, coupons, orders, banners }: Props) {
   const router = useRouter()
 
   const tabs = [
     { key: 'products', label: '📦 商品管理' },
     { key: 'coupons',  label: '🎟️ 優惠碼' },
     { key: 'orders',   label: '📋 訂單管理' },
+    { key: 'banners',  label: '📢 橫幅管理' },
   ]
 
   return (
     <div>
-      <div className="flex gap-1 bg-white border border-[#e8dcc8] rounded-xl p-1 mb-6 w-fit">
+      <div className="flex flex-wrap gap-1 bg-white border border-[#e8dcc8] rounded-xl p-1 mb-6 w-fit">
         {tabs.map(t => (
           <button key={t.key} onClick={() => router.push(`/admin?tab=${t.key}`)}
             className={`px-4 py-2 rounded-lg text-sm font-bold transition-all
@@ -45,6 +52,7 @@ function TabsInner({ tab, products, coupons, orders }: Props) {
       {tab === 'products' && <ProductList initialProducts={products} />}
       {tab === 'coupons'  && <CouponManager initialCoupons={coupons} />}
       {tab === 'orders'   && <OrderManager initialOrders={orders} />}
+      {tab === 'banners'  && <BannerManager initialBanners={banners} />}
     </div>
   )
 }
@@ -56,3 +64,4 @@ export default function AdminTabs(props: Props) {
     </Suspense>
   )
 }
+

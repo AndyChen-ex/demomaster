@@ -68,3 +68,11 @@ model Member {
   createdAt DateTime @default(now())
   orders    Order[]
 }
+
+model Banner {
+  id        String   @id @default(uuid())
+  text      String
+  active    Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+}
